@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mes cours de 6 A</title>
+  <style>
+    /* Variables pour faciliter la cohérence des couleurs */
+    :root {
+      --color-primary: #007aff;
+      --color-secondary: #5ac8fa;
+      --color-background: #f2f2f7;
+      --color-text: #000;
+      --color-white: #fff;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --notion-background: #2c2c2c;
+      --notion-text: #f0f0f0;
+      --notion-light-gray: #3a3a3a;
+      --word-font: 'Times New Roman', Times, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-background);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    nav {
+      background-color: var(--color-secondary);
+      display: flex;
+      justify-content: center;
+      padding: 0.7rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    nav a {
+      color: var(--color-white);
+      text-decoration: none;
+      margin: 0 1.2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.3rem 0.8rem;
+      border-radius: 24px;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    section {
+      padding: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+      text-align: center;
+      position: relative;
+    }
+
+    section h2::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 3px;
+      background-color: var(--color-secondary);
+      margin: 0.5rem auto;
+      border-radius: 2px;
+    }
+
+    .produits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .produit {
+      background-color: var(--color-white);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      width: 250px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .produit:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .produit h3 {
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .button {
+      display: inline-block;
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      padding: 0.6rem 1.2rem;
+      border-radius: 24px;
+      text-decoration: none;
+      margin-top: 1rem;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #005ec4;
+    }
+
+    .marge {
+      margin: 0.5rem 0;
+    }
+
+    footer {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .footer-links {
+      margin-top: 1rem;
+    }
+
+    .footer-links a {
+      color: var(--color-white);
+      margin: 0 0.5rem;
+      text-decoration: underline;
+    }
+
+    /* Notion-style modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      animation: fadeIn 0.3s;
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: var(--notion-background);
+      margin: 5% auto;
+      padding: 0;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      height: 85%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notion-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #444;
+    }
+
+    .notion-title {
+      font-size: 1.8rem;
+      color: var(--notion-text);
+      font-weight: 600;
+      flex-grow: 1;
+      padding: 8px 0;
+    }
+
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #555;
+    }
+
+    .notion-sidebar {
+      width: 240px;
+      background-color: var(--notion-light-gray);
+      height: 100%;
+      padding: 16px;
+      border-right: 1px solid #444;
+      overflow-y: auto;
+    }
+
+    .notion-main {
+      display: flex;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .notion-content {
+      flex-grow: 1;
+      padding: 24px;
+      overflow-y: auto;
+      color: var(--notion-text);
+      font-family: var(--word-font);
+    }
+
+    .notion-section {
+      margin-bottom: 30px;
+    }
+
+    .notion-h1 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--notion-text);
+    }
+
+    .notion-h2 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin: 24px 0 12px;
+      color: var(--notion-text);
+    }
+
+    .notion-h3 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin: 20px 0 10px;
+      color: var(--notion-text);
+    }
+
+    .notion-p {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .notion-block {
+      padding: 8px 0;
+      position: relative;
+    }
+
+    .notion-block:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .notion-menu-item {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 6px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      color: var(--notion-text);
+      opacity: 0.8;
+    }
+
+    .notion-menu-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .notion-menu-item-active {
+      background-color: rgba(255, 255, 255, 0.1);
+      font-weight: 500;
+      opacity: 1;
+    }
+
+    .notion-emoji {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+
+    .notion-toc {
+      border-left: 3px solid #444;
+      padding-left: 10px;
+      margin: 16px 0;
+    }
+
+    .notion-toc-item {
+      padding: 3px 5px;
+      margin: 3px 0;
+      font-size: 0.9rem;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .notion-toc-item:hover {
+      background-color: var(--notion-light-gray);
+      border-radius: 6px;
+    }
+
+    .notion-tag {
+      background-color: #444;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.85rem;
+      margin-right: 5px;
+      display: inline-block;
+    }
+
+    .notion-checkbox {
+      margin-right: 6px;
+      width: 16px;
+      height: 16px;
+    }
+
+    .notion-info-block {
+      background-color: #333;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 10px 0;
+    }
+
+    .notion-divider {
+      width: 100%;
+      height: 1px;
+      background-color: #444;
+      margin: 30px 0;
+    }
+
+    .notion-img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0}
+      to {opacity: 1}
+    }
+
+    /* Responsive design */
+    @media screen and (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem;
+      }
+
+      nav a {
+        margin: 0.3rem 0;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      .produit {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .notion-main {
+        flex-direction: column;
+      }
+
+      .notion-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        border-right: none;
+        border-bottom: 1px solid #444;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 10% auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Mes cours de 6 A</h1>
+    <p>Tous les cahiers d'Arthur TESSIER DEBIESSE en 6A</p>
+  </header>
+
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#matieres">Mes cahiers</a>
+    <a href="#agenda">Agenda</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="accueil">
+    <h2>Bienvenue sur mes cours de 6 A</h2>
+    <p>Retrouvez tous mes cahiers et cours de la classe de 6A. Cliquez sur une matière pour accéder à son contenu.</p>
+  </section>
+
+  <section id="matieres">
+    <h2>Mes matières</h2>
+    <div class="produits">
+      <div class="produit" onclick="openModal('français')">
+        <h3>Français</h3>
+        <p>Mme DURAND</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('histoire')">
+        <h3>Histoire-Géographie- E.M.C.</h3>
+        <p>Mme QUEMENERE</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('anglais')">
+        <h3>Lv 1 - Anglais</h3>
+        <p>Mme CRIBIER</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('maths')">
+        <h3>Mathématiques</h3>
+        <p>Mme ASSRAY</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('physique')">
+        <h3>Physique-Chimie</h3>
+        <p>Mr BATY</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('svt')">
+        <h3>S.V.T.</h3>
+        <p>Mme COGNIE</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('arts')">
+        <h3>Arts Plastiques</h3>
+        <p>Professeur</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('musique')">
+        <h3>Education Musicale</h3>
+        <p>Professeur</p>
+        <button class="button">Accéder</button>
+      </div>
+      <div class="produit" onclick="openModal('eps')">
+        <h3>E.P.S.</h3>
+        <p>Professeur</p>
+        <button class="button">Accéder</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="agenda">
+    <h2>Mon agenda</h2>
+    <p>Consultez mon agenda pour suivre les devoirs et événements importants.</p>
+    <div style="text-align: center; margin-top: 1rem;">
+      <button class="button" onclick="openModal('agenda')">Voir l'agenda</button>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p style="text-align: center;">Pour toute question, n'hésitez pas à me contacter.</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 ©VINOT - Tous droits réservés</p>
+    <div class="footer-links">
+      <a href="Mes cours de 6 A.html">Page d'accueil</a>
+      <a href="agenda.html">Mon agenda</a>
+    </div>
+  </footer>
+
+  <!-- Modals (fenêtres style Notion) -->
+  <!-- Modal Français -->
+  <div id="français-modal" class="modal">
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Français - Mme DURAND</div>
+        <span class="close" onclick="closeModal('français')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('français-cours')">
+            <span class="notion-emoji">📚</span> Cours
+          </div>
+          <div class="notion-menu-item" onclick="showSection('français-exercices')">
+            <span class="notion-emoji">📝</span> Exercices
+          </div>
+          <div class="notion-menu-item" onclick="showSection('français-planning')">
+            <span class="notion-emoji">📅</span> Planning
+          </div>
+          <div class="notion-menu-item" onclick="showSection('français-evaluations')">
+            <span class="notion-emoji">🏆</span> Évaluations
+          </div>
+          <div class="notion-menu-item" onclick="showSection('français-ressources')">
+            <span class="notion-emoji">📌</span> Ressources
+          </div>
+          <div style="margin: 20px 0 10px; font-size: 0.8rem; opacity: 0.6;">SOMMAIRE</div>
+          <div class="notion-toc">
+            <div class="notion-toc-item" onclick="scrollToSection('introduction')">Introduction</div>
+            <div class="notion-toc-item" onclick="scrollToSection('grammaire')">La grammaire</div>
+            <div class="notion-toc-item" onclick="scrollToSection('conjugaison')">La conjugaison</div>
+            <div class="notion-toc-item" onclick="scrollToSection('orthographe')">L'orthographe</div>
+            <div class="notion-toc-item" onclick="scrollToSection('litterature')">La littérature</div>
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="français-cours" class="notion-section">
+            <div class="notion-h1">Mes notes de Français</div>
+            <div class="notion-p">Bienvenue dans mon cahier de français. Vous trouverez ici toutes mes notes organisées par thème.</div>
+            <div class="notion-tags">
+              <span class="notion-tag">6ème</span>
+              <span class="notion-tag">Français</span>
+              <span class="notion-tag">2025</span>
+            </div>
+          </div>
+
+          <div id="français-exercices" class="notion-section" style="display:none;">
+            <div class="notion-h1">Exercices de Français</div>
+            <div class="notion-p">Voici quelques exercices à compléter.</div>
+            <!-- Ajoutez ici les exercices -->
+          </div>
+
+          <div id="français-planning" class="notion-section" style="display:none;">
+            <div class="notion-h1">Planning de Français</div>
+            <div class="notion-p">Voici le planning des cours de français.</div>
+            <!-- Ajoutez ici le planning -->
+          </div>
+
+          <div id="français-evaluations" class="notion-section" style="display:none;">
+            <div class="notion-h1">Évaluations de Français</div>
+            <div class="notion-p">Voici les évaluations à venir.</div>
+            <!-- Ajoutez ici les évaluations -->
+          </div>
+
+          <div id="français-ressources" class="notion-section" style="display:none;">
+            <div class="notion-h1">Ressources de Français</div>
+            <div class="notion-p">Voici quelques ressources supplémentaires.</div>
+            <!-- Ajoutez ici les ressources -->
+          </div>
+
+          <div class="notion-divider"></div>
+
+          <div id="introduction" class="notion-section">
+            <div class="notion-h2">Introduction</div>
+            <div class="notion-block notion-p">Le français est une matière fondamentale qui nous permet de maîtriser la langue française à travers plusieurs aspects : la grammaire, la conjugaison, l'orthographe et la littérature.</div>
+
+            <div class="notion-info-block">
+              <strong>À retenir :</strong> Les cours de français ont lieu les lundis et jeudis.
+            </div>
+          </div>
+
+          <div id="grammaire" class="notion-section">
+            <div class="notion-h2">La grammaire</div>
+            <div class="notion-block notion-p">La grammaire est l'ensemble des règles qui régissent la langue française. Nous étudions :</div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox" checked> Les natures de mots
+            </div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox" checked> Les fonctions
+            </div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox"> La structure de la phrase
+            </div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox"> L'analyse grammaticale
+            </div>
+          </div>
+
+          <div id="conjugaison" class="notion-section">
+            <div class="notion-h2">La conjugaison</div>
+            <div class="notion-block notion-p">La conjugaison concerne les verbes et leurs différentes formes selon les temps, les modes et les personnes.</div>
+            <div class="notion-h3">Les temps de l'indicatif</div>
+            <div class="notion-block notion-p">Nous avons étudié :</div>
+            <div class="notion-block">- Le présent</div>
+            <div class="notion-block">- L'imparfait</div>
+            <div class="notion-block">- Le futur simple</div>
+            <div class="notion-block">- Le passé composé</div>
+          </div>
+
+          <div id="orthographe" class="notion-section">
+            <div class="notion-h2">L'orthographe</div>
+            <div class="notion-block notion-p">L'orthographe regroupe les règles d'écriture des mots. Nous faisons régulièrement des dictées pour nous améliorer.</div>
+            <img src="/api/placeholder/400/150" alt="Exemple de dictée" class="notion-img">
+          </div>
+
+          <div id="litterature" class="notion-section">
+            <div class="notion-h2">La littérature</div>
+            <div class="notion-block notion-p">Cette année, nous étudions plusieurs œuvres :</div>
+            <div class="notion-block">• Les Fables de La Fontaine</div>
+            <div class="notion-block">• Le Petit Prince</div>
+            <div class="notion-block">• Les Contes de Perrault</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Histoire-Géographie -->
+  <div id="histoire-modal" class="modal">
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Histoire-Géographie-EMC - Mme QUEMENERE</div>
+        <span class="close" onclick="closeModal('histoire')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('histoire-cours')">
+            <span class="notion-emoji">🏛️</span> Histoire
+          </div>
+          <div class="notion-menu-item" onclick="showSection('geographie-cours')">
+            <span class="notion-emoji">🌍</span> Géographie
+          </div>
+          <div class="notion-menu-item" onclick="showSection('emc-cours')">
+            <span class="notion-emoji">⚖️</span> EMC
+          </div>
+          <div class="notion-menu-item" onclick="showSection('histoire-exercices')">
+            <span class="notion-emoji">📝</span> Exercices
+          </div>
+          <div class="notion-menu-item" onclick="showSection('histoire-evaluations')">
+            <span class="notion-emoji">🏆</span> Évaluations
+          </div>
+          <div style="margin: 20px 0 10px; font-size: 0.8rem; opacity: 0.6;">SOMMAIRE</div>
+          <div class="notion-toc">
+            <div class="notion-toc-item" onclick="scrollToSection('antiquite')">L'Antiquité</div>
+            <div class="notion-toc-item" onclick="scrollToSection('moyen-age')">Le Moyen Âge</div>
+            <div class="notion-toc-item" onclick="scrollToSection('continents')">Les continents</div>
+            <div class="notion-toc-item" onclick="scrollToSection('citoyennete')">La citoyenneté</div>
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="histoire-cours" class="notion-section">
+            <div class="notion-h1">Histoire-Géographie-EMC</div>
+            <div class="notion-p">Bienvenue dans mon cahier d'Histoire-Géographie-EMC. Ce cahier regroupe les trois matières enseignées par Mme QUEMENERE.</div>
+            <div class="notion-tags">
+              <span class="notion-tag">6ème</span>
+              <span class="notion-tag">Histoire</span>
+              <span class="notion-tag">Géographie</span>
+              <span class="notion-tag">EMC</span>
+            </div>
+          </div>
+
+          <div id="geographie-cours" class="notion-section" style="display:none;">
+            <div class="notion-h1">Géographie</div>
+            <div class="notion-p">Contenu de la section Géographie.</div>
+            <!-- Ajoutez ici le contenu de la géographie -->
+          </div>
+
+          <div id="emc-cours" class="notion-section" style="display:none;">
+            <div class="notion-h1">EMC</div>
+            <div class="notion-p">Contenu de la section EMC.</div>
+            <!-- Ajoutez ici le contenu de l'EMC -->
+          </div>
+
+          <div id="histoire-exercices" class="notion-section" style="display:none;">
+            <div class="notion-h1">Exercices d'Histoire-Géographie-EMC</div>
+            <div class="notion-p">Voici quelques exercices à compléter.</div>
+            <!-- Ajoutez ici les exercices -->
+          </div>
+
+          <div id="histoire-evaluations" class="notion-section" style="display:none;">
+            <div class="notion-h1">Évaluations d'Histoire-Géographie-EMC</div>
+            <div class="notion-p">Voici les évaluations à venir.</div>
+            <!-- Ajoutez ici les évaluations -->
+          </div>
+
+          <div class="notion-divider"></div>
+
+          <div id="antiquite" class="notion-section">
+            <div class="notion-h2">L'Antiquité</div>
+            <div class="notion-block notion-p">L'Antiquité est une période historique qui a commencé avec l'apparition de l'écriture et s'est terminée avec la chute de l'Empire romain d'Occident.</div>
+
+            <div class="notion-h3">L'Égypte ancienne</div>
+            <div class="notion-block notion-p">L'Égypte ancienne est une civilisation qui s'est développée le long du Nil. Les pharaons étaient considérés comme des dieux.</div>
+            <img src="/api/placeholder/400/200" alt="Pyramides d'Égypte" class="notion-img">
+
+            <div class="notion-h3">La Grèce antique</div>
+            <div class="notion-block notion-p">La Grèce antique est connue pour ses avancées en philosophie, en mathématiques, en littérature et en politique (démocratie).</div>
+          </div>
+
+          <div id="moyen-age" class="notion-section">
+            <div class="notion-h2">Le Moyen Âge</div>
+            <div class="notion-block notion-p">Le Moyen Âge est une période historique située entre l'Antiquité et l'époque moderne. Il a débuté avec la chute de l'Empire romain d'Occident en 476.</div>
+
+            <div class="notion-info-block">
+              <strong>À retenir :</strong> Le Moyen Âge se divise en trois périodes : le haut Moyen Âge, le Moyen Âge central et le bas Moyen Âge.
+            </div>
+          </div>
+
+          <div id="continents" class="notion-section">
+            <div class="notion-h2">Les continents</div>
+            <div class="notion-block notion-p">Contenu sur les continents.</div>
+            <!-- Ajoutez ici le contenu sur les continents -->
+          </div>
+
+          <div id="citoyennete" class="notion-section">
+            <div class="notion-h2">La citoyenneté</div>
+            <div class="notion-block notion-p">Contenu sur la citoyenneté.</div>
+            <!-- Ajoutez ici le contenu sur la citoyenneté -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Autres modals avec structure similaire -->
+  <div id="anglais-modal" class="modal">
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Anglais - Mme CRIBIER</div>
+        <span class="close" onclick="closeModal('anglais')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('anglais-cours')">
+            <span class="notion-emoji">🇬🇧</span> Cours
+          </div>
+          <div class="notion-menu-item" onclick="showSection('anglais-vocabulaire')">
+            <span class="notion-emoji">🗣️</span> Vocabulaire
+          </div>
+          <div class="notion-menu-item" onclick="showSection('anglais-exercices')">
+            <span class="notion-emoji">📝</span> Exercices
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="anglais-cours" class="notion-section">
+            <div class="notion-h1">Anglais</div>
+            <div class="notion-p">Mes cours d'anglais avec Mme CRIBIER.</div>
+          </div>
+
+          <div id="anglais-vocabulaire" class="notion-section" style="display:none;">
+            <div class="notion-h1">Vocabulaire d'Anglais</div>
+            <div class="notion-p">Contenu du vocabulaire.</div>
+            <!-- Ajoutez ici le contenu du vocabulaire -->
+          </div>
+
+          <div id="anglais-exercices" class="notion-section" style="display:none;">
+            <div class="notion-h1">Exercices d'Anglais</div>
+            <div class="notion-p">Voici quelques exercices à compléter.</div>
+            <!-- Ajoutez ici les exercices -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les cours d'anglais!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals pour les autres matières -->
+  <div id="maths-modal" class="modal">
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Mathématiques - Mme ASSRAY</div>
+        <span class="close" onclick="closeModal('maths')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('maths-cours')">
+            <span class="notion-emoji">🔢</span> Cours
+          </div>
+          <div class="notion-menu-item" onclick="showSection('maths-geometrie')">
+            <span class="notion-emoji">📏</span> Géométrie
+          </div>
+          <div class="notion-menu-item" onclick="showSection('maths-exercices')">
+            <span class="notion-emoji">📊</span> Exercices
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="maths-cours" class="notion-section">
+            <div class="notion-h1">Mathématiques</div>
+            <div class="notion-p">Mes cours de mathématiques avec Mme ASSRAY.</div>
+          </div>
+
+          <div id="maths-geometrie" class="notion-section" style="display:none;">
+            <div class="notion-h1">Géométrie</div>
+            <div class="notion-p">Contenu de la géométrie.</div>
+            <!-- Ajoutez ici le contenu de la géométrie -->
+          </div>
+
+          <div id="maths-exercices" class="notion-section" style="display:none;">
+            <div class="notion-h1">Exercices de Mathématiques</div>
+            <div class="notion-p">Voici quelques exercices à compléter.</div>
+            <!-- Ajoutez ici les exercices -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les cours de mathématiques!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="agenda-modal" class="modal">
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Mon agenda</div>
+        <span class="close" onclick="closeModal('agenda')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('agenda-semaine')">
+            <span class="notion-emoji">📅</span> Cette semaine
+          </div>
+          <div class="notion-menu-item" onclick="showSection('agenda-devoirs')">
+            <span class="notion-emoji">📚</span> Devoirs
+          </div>
+          <div class="notion-menu-item" onclick="showSection('agenda-evaluations')">
+            <span class="notion-emoji">🎯</span> Évaluations
+          </div>
+        <div class="notion-content">
+          <div id="agenda-semaine" class="notion-section">
+            <div class="notion-h1">Mon agenda</div>
+            <div class="notion-p">Mon planning de la semaine et mes devoirs pour les différentes matières.</div>
+          </div>
+
+          <div id="agenda-devoirs" class="notion-section" style="display:none;">
+            <div class="notion-h1">Devoirs</div>
+            <div class="notion-p">Liste des devoirs à faire.</div>
+            <!-- Ajoutez ici la liste des devoirs -->
+          </div>
+
+          <div id="agenda-evaluations" class="notion-section" style="display:none;">
+            <div class="notion-h1">Évaluations à venir</div>
+            <div class="notion-p">Liste des évaluations à venir.</div>
+            <!-- Ajoutez ici la liste des évaluations -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Cette semaine</div>
+            <div class="notion-block">
+              <strong>Lundi</strong>
+              <ul style="padding-left: 20px;">
+                <li>Français : Apprendre la leçon sur les adjectifs qualificatifs</li>
+                <li>Mathématiques : Exercices p.45</li>
+              </ul>
+            </div>
+            <div class="notion-block">
+              <strong>Mardi</strong>
+              <ul style="padding-left: 20px;">
+                <li>Histoire : Réviser la leçon sur l'Égypte ancienne</li>
+                <li>Anglais : Vocabulaire à apprendre</li>
+              </ul>
+            </div>
+            <div class="notion-block">
+              <strong>Mercredi</strong>
+              <ul style="padding-left: 20px;">
+                <li>SVT : Préparer l'exposé sur les végétaux</li>
+              </ul>
+            </div>
+            <div class="notion-block">
+              <strong>Jeudi</strong>
+              <ul style="padding-left: 20px;">
+                <li>Physique-Chimie : Exercices sur les états de la matière</li>
+                <li>Mathématiques : Finir le DM pour lundi</li>
+              </ul>
+            </div>
+            <div class="notion-block">
+              <strong>Vendredi</strong>
+              <ul style="padding-left: 20px;">
+                <li>Français : Dictée</li>
+                <li>EPS : Apporter la tenue de sport</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="notion-section">
+            <div class="notion-h2">Évaluations à venir</div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox"> Contrôle de mathématiques (lundi prochain)
+            </div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox"> Évaluation d'histoire (jeudi prochain)
+            </div>
+            <div class="notion-block">
+              <input type="checkbox" class="notion-checkbox"> Exposé SVT (dans deux semaines)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ajouter ici d'autres modaux pour les matières restantes -->
+  <div id="physique-modal" class="modal">
+    <!-- Structure similaire pour Physique-Chimie -->
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Physique-Chimie - Mr BATY</div>
+        <span class="close" onclick="closeModal('physique')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('physique-cours')">
+            <span class="notion-emoji">⚗️</span> Cours
+          </div>
+          <div class="notion-menu-item" onclick="showSection('physique-experiences')">
+            <span class="notion-emoji">🧪</span> Expériences
+          </div>
+          <div class="notion-menu-item" onclick="showSection('physique-exercices')">
+            <span class="notion-emoji">📝</span> Exercices
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="physique-cours" class="notion-section">
+            <div class="notion-h1">Physique-Chimie</div>
+            <div class="notion-p">Mes cours de physique-chimie avec Mr BATY.</div>
+          </div>
+
+          <div id="physique-experiences" class="notion-section" style="display:none;">
+            <div class="notion-h1">Expériences de Physique-Chimie</div>
+            <div class="notion-p">Contenu des expériences.</div>
+            <!-- Ajoutez ici le contenu des expériences -->
+          </div>
+
+          <div id="physique-exercices" class="notion-section" style="display:none;">
+            <div class="notion-h1">Exercices de Physique-Chimie</div>
+            <div class="notion-p">Voici quelques exercices à compléter.</div>
+            <!-- Ajoutez ici les exercices -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les cours de physique-chimie!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="svt-modal" class="modal">
+    <!-- Structure similaire pour SVT -->
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">S.V.T. - Mme COGNIE</div>
+        <span class="close" onclick="closeModal('svt')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('svt-cours')">
+            <span class="notion-emoji">🌱</span> Cours
+          </div>
+          <div class="notion-menu-item" onclick="showSection('svt-tp')">
+            <span class="notion-emoji">🔬</span> T.P.
+          </div>
+          <div class="notion-menu-item" onclick="showSection('svt-exercices')">
+            <span class="notion-emoji">📝</span> Exercices
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="svt-cours" class="notion-section">
+            <div class="notion-h1">Sciences de la Vie et de la Terre</div>
+            <div class="notion-p">Mes cours de S.V.T. avec Mme COGNIE.</div>
+          </div>
+
+          <div id="svt-tp" class="notion-section" style="display:none;">
+            <div class="notion-h1">Travaux Pratiques de S.V.T.</div>
+            <div class="notion-p">Contenu des T.P.</div>
+            <!-- Ajoutez ici le contenu des T.P. -->
+          </div>
+
+          <div id="svt-exercices" class="notion-section" style="display:none;">
+            <div class="notion-h1">Exercices de S.V.T.</div>
+            <div class="notion-p">Voici quelques exercices à compléter.</div>
+            <!-- Ajoutez ici les exercices -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les cours de S.V.T.!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="arts-modal" class="modal">
+    <!-- Structure similaire pour Arts Plastiques -->
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Arts Plastiques</div>
+        <span class="close" onclick="closeModal('arts')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('arts-projets')">
+            <span class="notion-emoji">🎨</span> Projets
+          </div>
+          <div class="notion-menu-item" onclick="showSection('arts-techniques')">
+            <span class="notion-emoji">🖌️</span> Techniques
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="arts-projets" class="notion-section">
+            <div class="notion-h1">Arts Plastiques</div>
+            <div class="notion-p">Mes projets et cours d'arts plastiques.</div>
+          </div>
+
+          <div id="arts-techniques" class="notion-section" style="display:none;">
+            <div class="notion-h1">Techniques d'Arts Plastiques</div>
+            <div class="notion-p">Contenu des techniques.</div>
+            <!-- Ajoutez ici le contenu des techniques -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les cours d'arts plastiques!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="musique-modal" class="modal">
+    <!-- Structure similaire pour Education Musicale -->
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">Education Musicale</div>
+        <span class="close" onclick="closeModal('musique')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('musique-cours')">
+            <span class="notion-emoji">🎵</span> Cours
+          </div>
+          <div class="notion-menu-item" onclick="showSection('musique-chants')">
+            <span class="notion-emoji">🎼</span> Chants
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="musique-cours" class="notion-section">
+            <div class="notion-h1">Education Musicale</div>
+            <div class="notion-p">Mes cours d'éducation musicale.</div>
+          </div>
+
+          <div id="musique-chants" class="notion-section" style="display:none;">
+            <div class="notion-h1">Chants d'Education Musicale</div>
+            <div class="notion-p">Contenu des chants.</div>
+            <!-- Ajoutez ici le contenu des chants -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les cours d'éducation musicale!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="eps-modal" class="modal">
+    <!-- Structure similaire pour EPS -->
+    <div class="modal-content">
+      <div class="notion-header">
+        <div class="notion-title">E.P.S.</div>
+        <span class="close" onclick="closeModal('eps')">&times;</span>
+      </div>
+      <div class="notion-main">
+        <div class="notion-sidebar">
+          <div class="notion-menu-item notion-menu-item-active" onclick="showSection('eps-activites')">
+            <span class="notion-emoji">🏃</span> Activités
+          </div>
+          <div class="notion-menu-item" onclick="showSection('eps-evaluations')">
+            <span class="notion-emoji">🏅</span> Évaluations
+          </div>
+        </div>
+        <div class="notion-content">
+          <div id="eps-activites" class="notion-section">
+            <div class="notion-h1">Education Physique et Sportive</div>
+            <div class="notion-p">Mes cours d'E.P.S.</div>
+          </div>
+
+          <div id="eps-evaluations" class="notion-section" style="display:none;">
+            <div class="notion-h1">Évaluations d'E.P.S.</div>
+            <div class="notion-p">Contenu des évaluations.</div>
+            <!-- Ajoutez ici le contenu des évaluations -->
+          </div>
+
+          <div class="notion-divider"></div>
+          <div class="notion-section">
+            <div class="notion-h2">Contenu en cours de développement</div>
+            <div class="notion-block notion-p">Cette page est en construction. Revenez bientôt pour voir les informations sur les cours d'E.P.S.!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fonctions pour ouvrir et fermer les modaux
+    function openModal(subject) {
+      document.getElementById(subject + '-modal').style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Empêche le défilement du corps de la page
+    }
+
+    function closeModal(subject) {
+      document.getElementById(subject + '-modal').style.display = 'none';
+      document.body.style.overflow = 'auto'; // Rétablit le défilement
+    }
+
+    // Fermer la modal si l'utilisateur clique en dehors
+    window.onclick = function(event) {
+      var modals = document.getElementsByClassName('modal');
+      for (var i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+          modals[i].style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      }
+    }
+
+    // Fonctions pour afficher les sections spécifiques dans les modals
+    function showSection(sectionId) {
+      var sections = document.querySelectorAll('.notion-section');
+      sections.forEach(function(section) {
+        section.style.display = 'none';
+      });
+      document.getElementById(sectionId).style.display = 'block';
+    }
+
+    // Fonction pour faire défiler jusqu'à une section spécifique
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

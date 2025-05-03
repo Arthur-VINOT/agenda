@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier des Devoirs</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .calendar-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        .weekday {
+            padding: 15px;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .weekday:last-child {
+            border-right: none;
+        }
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            min-height: 500px;
+        }
+        .day {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            min-height: 150px;
+            background-color: white;
+        }
+        .day-header {
+            text-align: right;
+            padding: 5px;
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .homework-list {
+            margin-top: 10px;
+        }
+        .homework-item {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 14px;
+            position: relative;
+        }
+        .homework-item button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .homework-item button:hover {
+            opacity: 1;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button[type="submit"] {
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            grid-column: 1 / -1;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover {
+            background-color: #2ecc71;
+        }
+        .today {
+            background-color: #f0f8ff;
+        }
+        .date-display {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .navigation-buttons button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calendrier des Devoirs</h1>
+    
+    <div class="controls">
+        <div class="date-display" id="current-week-display"></div>
+        <div class="navigation-buttons">
+            <button id="prev-week">Semaine Précédente</button>
+            <button id="current-week">Cette Semaine</button>
+            <button id="next-week">Semaine Suivante</button>
+        </div>
+    </div>
+    
+    <div class="calendar-container">
+        <div class="weekdays">
+            <div class="weekday">Lundi</div>
+            <div class="weekday">Mardi</div>
+            <div class="weekday">Mercredi</div>
+            <div class="weekday">Jeudi</div>
+            <div class="weekday">Vendredi</div>
+            <div class="weekday">Samedi</div>
+            <div class="weekday">Dimanche</div>
+        </div>
+        <div class="days-grid" id="days-grid"></div>
+    </div>
+    
+    <div class="form-container">
+        <h2>Ajouter un devoir</h2>
+        <form id="homework-form">
+            <div class="form-group">
+                <label for="hw-subject">Matière:</label>
+                <input type="text" id="hw-subject" required>
+            </div>
+            <div class="form-group">
+                <label for="hw-date">Date:</label>
+                <input type="date" id="hw-date" required>
+            </div>
+            <div class="form-group">
+                <label for="hw-priority">Priorité:</label>
+                <select id="hw-priority">
+                    <option value="low">Basse</option>
+                    <option value="medium" selected>Moyenne</option>
+                    <option value="high">Haute</option>
+                </select>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="hw-description">Description:</label>
+                <textarea id="hw-description" required></textarea>
+            </div>
+            <button type="submit">Ajouter Devoir</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const daysGrid = document.getElementById('days-grid');
+            const homeworkForm = document.getElementById('homework-form');
+            const currentWeekDisplay = document.getElementById('current-week-display');
+            const prevWeekBtn = document.getElementById('prev-week');
+            const nextWeekBtn = document.getElementById('next-week');
+            const currentWeekBtn = document.getElementById('current-week');
+            
+            let currentDate = new Date();
+            let currentWeekStart;
+            
+            // Load saved homeworks from localStorage
+            let homeworks = JSON.parse(localStorage.getItem('homeworks')) || [];
+            
+            // Set the current week to start on Monday
+            function setCurrentWeekStart() {
+                const day = currentDate.getDay(); // 0 is Sunday, 1 is Monday, etc.
+                
+                // Calculate days to subtract to get to Monday
+                // If today is Sunday (0), subtract 6 days to get to previous Monday
+                // Otherwise, subtract (day - 1) days
+                const daysToSubtract = day === 0 ? 6 : day - 1;
+                
+                // Clone the current date to avoid modifying it
+                currentWeekStart = new Date(currentDate);
+                currentWeekStart.setDate(currentDate.getDate() - daysToSubtract);
+                currentWeekStart.setHours(0, 0, 0, 0);
+                
+                updateWeekDisplay();
+            }
+            
+            function updateWeekDisplay() {
+                const weekEnd = new Date(currentWeekStart);
+                weekEnd.setDate(currentWeekStart.getDate() + 6);
+                
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const startFormatted = currentWeekStart.toLocaleDateString('fr-FR', options);
+                const endFormatted = weekEnd.toLocaleDateString('fr-FR', options);
+                
+                currentWeekDisplay.textContent = `Semaine du ${startFormatted} au ${endFormatted}`;
+            }
+            
+            function renderCalendar() {
+                daysGrid.innerHTML = '';
+                
+                // Clone the current week start date to avoid modifying it
+                const weekStart = new Date(currentWeekStart);
+                
+                // Get today's date for highlighting the current day
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                // Render each day of the week
+                for (let i = 0; i < 7; i++) {
+                    const currentDay = new Date(weekStart);
+                    currentDay.setDate(weekStart.getDate() + i);
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'day';
+                    
+                    // Highlight today
+                    if (currentDay.getTime() === today.getTime()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day-header';
+                    dayHeader.textContent = currentDay.getDate();
+                    dayElement.appendChild(dayHeader);
+                    
+                    const homeworkList = document.createElement('div');
+                    homeworkList.className = 'homework-list';
+                    
+                    // Add homeworks for this day
+                    const dayHomeworks = homeworks.filter(hw => {
+                        const hwDate = new Date(hw.date);
+                        hwDate.setHours(0, 0, 0, 0);
+                        return hwDate.getTime() === currentDay.getTime();
+                    });
+                    
+                    dayHomeworks.forEach(hw => {
+                        const homeworkItem = document.createElement('div');
+                        homeworkItem.className = 'homework-item';
+                        
+                        // Add color based on priority
+                        if (hw.priority === 'high') {
+                            homeworkItem.style.borderLeftColor = '#e74c3c';
+                        } else if (hw.priority === 'medium') {
+                            homeworkItem.style.borderLeftColor = '#f39c12';
+                        } else {
+                            homeworkItem.style.borderLeftColor = '#3498db';
+                        }
+                        
+                        homeworkItem.innerHTML = `
+                            <strong>${hw.subject}</strong>
+                            <p>${hw.description}</p>
+                            <button class="delete-btn" data-id="${hw.id}">×</button>
+                        `;
+                        
+                        homeworkList.appendChild(homeworkItem);
+                    });
+                    
+                    dayElement.appendChild(homeworkList);
+                    daysGrid.appendChild(dayElement);
+                }
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const homeworkId = parseInt(this.getAttribute('data-id'));
+                        deleteHomework(homeworkId);
+                    });
+                });
+            }
+            
+            function deleteHomework(id) {
+                homeworks = homeworks.filter(hw => hw.id !== id);
+                saveHomeworks();
+                renderCalendar();
+            }
+            
+            function saveHomeworks() {
+                localStorage.setItem('homeworks', JSON.stringify(homeworks));
+            }
+            
+            homeworkForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subject = document.getElementById('hw-subject').value;
+                const date = document.getElementById('hw-date').value;
+                const description = document.getElementById('hw-description').value;
+                const priority = document.getElementById('hw-priority').value;
+                
+                // Create a new homework object
+                const newHomework = {
+                    id: Date.now(), // Simple unique ID
+                    subject: subject,
+                    date: date,
+                    description: description,
+                    priority: priority
+                };
+                
+                homeworks.push(newHomework);
+                saveHomeworks();
+                renderCalendar();
+                
+                // Reset the form
+                homeworkForm.reset();
+            });
+            
+            prevWeekBtn.addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+                updateWeekDisplay();
+                renderCalendar();
+            });
+            
+            nextWeekBtn.addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+                updateWeekDisplay();
+                renderCalendar();
+            });
+            
+            currentWeekBtn.addEventListener('click', function() {
+                currentDate = new Date();
+                setCurrentWeekStart();
+                renderCalendar();
+            });
+            
+            // Initialize the calendar
+            setCurrentWeekStart();
+            renderCalendar();
+        });
+    </script>
+</body>
+</html>
